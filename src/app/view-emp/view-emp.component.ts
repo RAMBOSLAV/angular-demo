@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../employee.model';
+import { EmployeeService } from '../employee.service';
 import { Skill } from '../skill.model';
 
 @Component({
@@ -9,25 +10,17 @@ import { Skill } from '../skill.model';
 })
 export class ViewEmpComponent implements OnInit {
 
-  title = 'Employee Details';
+  employees: Employee[] = [];
 
-  employee: Employee  = {firstName: "Rambo",
-  lastName: "Slayer",
-  salary: 100000,
-  id: 1,
-  permanentStaff: "Yes",
-  deptId: 1516,
-  deptName: "Kaizoku",
-  dob: new Date("12-10-1998")
-  };
+  constructor(private heroService: EmployeeService) { }
 
-  skills: Skill[] = [{id: 1, name: "HTML"},
-  {id: 2, name: "CSS"},
-  {id: 3, name: "JS"}]
+  ngOnInit() {
+    this.getEmployees();
+  }
 
-  constructor() { }
-
-  ngOnInit(): void {
+  getEmployees(): void {
+    this.heroService.getEmployees()
+      .subscribe(employees => this.employees = employees.slice(1, 5));
   }
 
 }
